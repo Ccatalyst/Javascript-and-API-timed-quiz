@@ -29,11 +29,30 @@ var finalScore = document.querySelector("#final-score");
 var initials = document.querySelector("#initials");
 var submit = document.querySelector("#submit");
 
-var displayTime = 75;
+var displayTime = 60;
 var startIndex = 0;
 var timerState;
 
 //startIndex 0 for question 1, which shows codequestions [0].title
+
+//connects to start quiz function to start timer, and when time <= 0, fires quiz end function
+function setTimeInterval() {
+	//updates the displayTime integer
+	displayTime--;
+	time.textContent = displayTime;
+	if (time <= 0) {
+		//quiz end function
+		console.log("quiz is over");
+	}
+}
+
+function startQuiz() {
+	//hide the start screen and start the timer
+	startScreen.setAttribute("class", "hide");
+	questions.removeAttribute("class");
+	//sets the timer to count down by 1 second every 1 second
+	timerState = setInterval(setTimeInterval, 1000);
+}
 
 //start function
 //cycle questions function
