@@ -28,11 +28,14 @@ var endScreen = document.querySelector("#end-screen");
 var finalScore = document.querySelector("#final-score");
 var initials = document.querySelector("#initials");
 var submit = document.querySelector("#submit");
+var scoresList = document.querySelector("#scoresList");
 
-var displayTime = 60;
+var displayTime = 10;
 var startIndex = 0;
 var timerState;
-
+var score = 0;
+var savedScores = JSON.parse(localStorage.getItem("score")) || [];
+console.log(savedScores);
 //startIndex 0 for question 1, which shows codequestions [0].title
 
 //connects to start quiz function to start timer, and when time <= 0, fires quiz end function
@@ -40,8 +43,8 @@ function setTimeInterval() {
 	//updates the displayTime integer
 	displayTime--;
 	time.textContent = displayTime;
-	if (time <= 0) {
-		//quiz end function
+	if (displayTime <= 0) {
+		quizEnd();
 		console.log("quiz is over");
 	}
 }
@@ -70,20 +73,18 @@ function nextQuestion() {
 		var choiceBtn = document.createElement("button");
 		choiceBtn.setAttribute("value", choice);
 		choiceBtn.textContent = choice;
-		//TODO: mention to TA and ask about solutions to lines 74 through 76 vs. line 77
-		// choiceBtn.addEventListener("click", function () {
-		// 	checkAnswer();
-		// });
 		choiceBtn.onclick = checkAnswer;
-
 		choices.appendChild(choiceBtn);
 	});
 }
 function checkAnswer() {
 	if (this.value === codequestions[startIndex].answer) {
-		console.log("burp");
+		console.log("correct");
+		score += 5;
+		console.log(score);
 	} else {
-		console.log("fart");
+		displayTime -= 5;
+		console.log("incorrect");
 	}
 	startIndex++;
 	if (startIndex === codequestions.length) {
@@ -94,8 +95,29 @@ function checkAnswer() {
 }
 
 function quizEnd() {
+	clearInterval(timerState);
 	questions.setAttribute("class", "hide");
 	endScreen.removeAttribute("class");
+
+	var inits = window.prompt("Enter your initials");
+	var scoreboard = {
+		inits,
+		score,
+	};
+	savedScores.push(scoreboard);
+	localStorage.setItem("score", JSON.stringify(savedScores));
+
+	finalScore.textContent = score;
+	renderScores();
+}
+
+function renderScores() {
+	for (let i = 0; i < savedScores.length; i++) {
+		const element = savedScores[i];
+		var newLi = document.createElement("li");
+		newLi.textContent = element.inits + " -- " + element.score;
+		scoresList.appendChild(newLi);
+	}
 }
 
 startBtn.addEventListener("click", function (event) {
@@ -103,14 +125,6 @@ startBtn.addEventListener("click", function (event) {
 	startQuiz();
 });
 
-//cycle questions function
-//timer function
-//check questions against answers and move to next question
-//end quiz function
-
-// codequestions[0].title
-// codequestions[0].choices[0] //forEach codequestions(blah blah) create a button for each of them
-// codequestions[0].answer[0]
-
-//goes inside of end quiz function
-// clearInterval (timerstate)
+//BUG LIST:
+// -initials not saved. Instead [Object Object] is shown in scoreboard
+// -continues to re run quiz end function even at quiz end screen.
