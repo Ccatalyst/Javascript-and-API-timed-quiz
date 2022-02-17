@@ -30,7 +30,7 @@ var initials = document.querySelector("#initials");
 var submit = document.querySelector("#submit");
 var scoresList = document.querySelector("#scoresList");
 
-var displayTime = 10;
+var displayTime = 60;
 var startIndex = 0;
 var timerState;
 var score = 0;
@@ -78,6 +78,7 @@ function nextQuestion() {
 	});
 }
 function checkAnswer() {
+	//if else to mark values of vars depending on if the answer is correct or not
 	if (this.value === codequestions[startIndex].answer) {
 		console.log("correct");
 		score += 5;
@@ -87,6 +88,7 @@ function checkAnswer() {
 		console.log("incorrect");
 	}
 	startIndex++;
+	//if there are no more questions, run quiz end function
 	if (startIndex === codequestions.length) {
 		quizEnd();
 	} else {
@@ -95,10 +97,13 @@ function checkAnswer() {
 }
 
 function quizEnd() {
+	//clears the timer
 	clearInterval(timerState);
+	//hides the questions
 	questions.setAttribute("class", "hide");
+	//shows the end screen
 	endScreen.removeAttribute("class");
-
+	//a prompt to enter initials
 	var inits = window.prompt("Enter your initials");
 	var scoreboard = {
 		inits,
@@ -110,7 +115,7 @@ function quizEnd() {
 	finalScore.textContent = score;
 	renderScores();
 }
-
+//scoreboard with local storage information
 function renderScores() {
 	for (let i = 0; i < savedScores.length; i++) {
 		const element = savedScores[i];
@@ -119,12 +124,11 @@ function renderScores() {
 		scoresList.appendChild(newLi);
 	}
 }
-
+//button that starts the quiz
 startBtn.addEventListener("click", function (event) {
 	event.preventDefault();
 	startQuiz();
 });
 
 //BUG LIST:
-// -initials not saved. Instead [Object Object] is shown in scoreboard
-// -continues to re run quiz end function even at quiz end screen.
+//
