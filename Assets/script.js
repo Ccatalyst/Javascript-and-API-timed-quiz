@@ -1,8 +1,8 @@
 var codequestions = [
 	{
-		title: "Commonly used data types DO NOT include:",
-		choices: ["strings", "booleans", "alerts", "numbers"],
-		answer: "alerts",
+		title: "The syntax for a variable is:",
+		choices: ["var varName;", "variable (navName)", "var:navName", "v navName"],
+		answer: "var varName;",
 	},
 	{
 		title: "The condition in an if / else statement is enclosed within ____.",
@@ -10,9 +10,19 @@ var codequestions = [
 		answer: "parentheses",
 	},
 	{
-		title: "Spiderman’s real name is…",
-		choices: ["Bob Sagat", "Ryu", "Peter Parker", "Clark Kent"],
-		answer: "Peter Parker",
+		title: "Comments are started with what symbols?",
+		choices: ["**", "~", "//", "<<!>"],
+		answer: "//",
+	},
+	{
+		title: "Is Javascript case-sensitive?",
+		choices: ["Yes", "No"],
+		answer: "Yes ",
+	},
+	{
+		title: "Where is the correct place to insert a JavaScript?",
+		choices: ["<head>", "<body>", "Both"],
+		answer: "Both",
 	},
 ];
 
@@ -72,6 +82,7 @@ function nextQuestion() {
 	showQuestion.choices.forEach(function (choice) {
 		var choiceBtn = document.createElement("button");
 		choiceBtn.setAttribute("value", choice);
+		choiceBtn.setAttribute("class", ".quizButton");
 		choiceBtn.textContent = choice;
 		choiceBtn.onclick = checkAnswer;
 		choices.appendChild(choiceBtn);
